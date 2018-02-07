@@ -1,21 +1,27 @@
-#!/bin/python3
+"""
+This is the code for PDF Viewer
+"""
 
-import sys
 
-def designerPdfViewer(h, word):
-    li,pi=[],[]
-    for i in word:
-        li.append(ord(i)-97)
-    
-    for i,j in enumerate(h):
-        if(i in li):
-            pi.append(j)
-    print(max(pi)*len(word))
+def designer_pdf_viewer(height_letter, word_input):
+    """
+    Converts the letters to corresponding
+    position checks for the presence and computes
+
+    """
+    lil, pip = [], []
+    for i in word_input:
+        lil.append(ord(i) - 97)
+
+    for i, j in enumerate(height_letter):
+        if i in lil:
+            pip.append(j)
+    print(max(pip) * len(word_input))
     # Complete this function
 
-if __name__ == "__main__":
-    h = list(map(int, input().strip().split(' ')))
-    word = input().strip()
-    result = designerPdfViewer(h, word)
-    
 
+if __name__ == "__main__":
+
+    HEIGHT_LETTER = list(map(int, input().strip().split(' ')))
+    WORD_INPUT = input().strip()
+    designer_pdf_viewer(HEIGHT_LETTER, WORD_INPUT)
