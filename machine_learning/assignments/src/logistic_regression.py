@@ -1,52 +1,73 @@
-'''
-Logistic Regression
-'''
+''' Logistic Regression '''
+
+import sys
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
-LIL = []
-PIP = []
-with open('x.dat', 'r') as xd:
-    with open('y.dat', 'r') as yd:
-        DATA = xd.readlines()
-        CHECK = yd.readlines()
-        for i in DATA:
-            LIL.append(i.strip().split())
-        for j in CHECK:
-            PIP.append(float(j.strip()))
 
-        X, XR, YR, XB, YB = [], [], [], [], []
-        for i, j in enumerate(LIL):
-            X.append([float(j[0]), float(j[1])])
 
-            if PIP[i] == 0:
-                XR.append(float(j[0]))
-                YR.append(float(j[1]))
+def train(X_data, y_data):
+  '''
+  '''
+  # Instantiate Logistic regression object and train with input data
+  logreg = LogisticRegression()
+  logreg.fit(X_data, y_data)
 
-            else:
-                XB.append(float(j[0]))
-                YB.append(float(j[1]))
+  return logreg
 
-        plt.scatter(XR, YR, color="red")
-        plt.scatter(XB, YB)
 
-        U = (np.array(X))
+def test(X_data, y_data, model):
+  '''
+  '''
+  accuracy = model.score(X_data, y_data)
+  return accuracy
 
-        V = np.array(PIP)
 
-        LOGREG = LogisticRegression()
-        LOGREG.fit(U, V)
+def plot(X, y, model):
+  '''
+  '''
+  # Plot the data
+  clr_list = ['blue' if y_val else 'red' for y_val in y]
+  plt.scatter(X[:, 0], X[:, 1], color=clr_list)
 
-        # t = logreg.predict(np.array([[0.34792627, 0.8625731]]))
+  # Draw line using the model parameters (learned)
+  m = model.coef_[0][0]
+  c = model.coef_[0][1]
+  x2 = max(X[:, 0])
+  x1 = min(X[:, 0])
+  y1 = x1 * m + c
+  y2 = x2 * m + c
+  x_coords = [x1, x2]
+  y_coords = [y1, y2]
+  plt.plot(x_coords, y_coords)
+  plt.show()
 
-        M = LOGREG.coef_[0][0]
-        C = LOGREG.coef_[0][1]
 
-        X2 = max(max(XB), max(XR))
-        X1 = min(min(XR), min(XB))
-        Y1 = X1 * M + C
-        Y2 = X2 * M + C
-        XP = [X1, X2]
-        YP = [Y1, Y2]
-        plt.plot(XP, YP)
-        plt.show()
+def read_data(file_path):
+  '''
+  '''
+  data = np.loadtxt(file_path)
+  return data
+
+
+def run_experiment(x_path, y_path):
+  '''
+  '''
+  # Read X and y training matrices / data and train Logistic regression model
+  X_data = read_data(x_path)
+  y_data = read_data(y_path)
+  model = train(X_data, y_data)
+
+  # Test the trained model with the training data and calculate training error
+  train_error = test(X_data, y_data, model)
+  print('The training error ---> ', round(train_error * 100, 2))
+
+  # Plot the data points and Hypothesis function which separates data
+  plot(X_data, y_data, model)
+
+
+if __name__ == '__main__':
+  args = sys.argv[1:]
+  X_PATH, Y_PATH = args
+  run_experiment(X_PATH, Y_PATH)
