@@ -24,7 +24,7 @@ def img_correction(image):
     by morphology and returns the corrected image
     """
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY_INV)
+    _, thresh = cv2.threshold(gray, 120, 255, cv2.THRESH_BINARY_INV)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
     dilated = cv2.dilate(thresh, kernel, iterations=1)
