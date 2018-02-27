@@ -44,7 +44,7 @@ def alignImages(im1, im2):
 
     return im1Reg, h
 if __name__ == '__main__':
-    im = cv2.imread("img0005.jpg", cv2.IMREAD_COLOR)
+    im = cv2.imread("img0003.jpg", cv2.IMREAD_COLOR)
     imReference = cv2.imread("add.jpg", cv2.IMREAD_COLOR)
 
     imReg, h = alignImages(im, imReference)
